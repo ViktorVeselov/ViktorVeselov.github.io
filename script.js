@@ -2,31 +2,31 @@
 const projects = {
     'RTST': {
         description: '"Rtst" is a Python package for comprehensive speech processing. It integrates speech recognition, language detection, translation, and text-to-speech functionalities into a single, easy-to-use function.',
-        link: 'https://github.com/SweatyCrayfish/Real-Time-Speech-Translator-rtst'
+        link: 'https://github.com/ViktorVeselov/Real-Time-Speech-Translator-rtst'
     },
     'Simple Deployment': {
         description: 'This project is a chatbot interface that integrates the Hugging Face Transformers library with a Flask backend. It serves a frontend built with HTML, CSS, and JavaScript to interact with the user. The user can input text, which is then processed by the Flask backend and fed into a pre-trained language model. The model-generated text is then sent back to the frontend and displayed.',
-        link: 'https://github.com/SweatyCrayfish/simple-deployment/tree/main'
+        link: 'https://github.com/ViktorVeselov/simple-deployment/tree/main'
     },
     'Ubuntu Llama-2-7B': {
         description: 'Building dialogue systems, where a human can have a natural-feeling conversation with a virtual agent, is a challenging task in Natural Language Processing and the focus of much ongoing research. Some of the challenges include linking references to the same entity over time, tracking what has happened in the conversation previously, and generating appropriate responses. This paper delves into our experiment in building such a virtual agent. We scrutinized various models such as CodeLLaMa, OPT, FlanT5, and Llama2. We outline the rationale behind our choice of Llama2-chat-instruct and how the model stands out due to its high-quality, instruction-tuned capabilities, and inherent ability for summarizing text. To further augment the quality of inferences drawn by the model, we implement a complete fine-tuning approach. Furthermore, we will explore Parameter Efficient Fine-Tuning (PEFT), demonstrating how it reduces memory and time resource requirements while maintaining model performance. Finally, we will assess these results using ROUGE metrics - a popular choice for evaluating models - and deploy the model to Hugging Face for serving.',
-        link: 'https://github.com/SweatyCrayfish/Ubuntu-Lllama-2/tree/main'
+        link: 'https://github.com/ViktorVeselov/Ubuntu-Lllama-2/tree/main'
     },
     'Web-Scraping-NLP': {
         description: 'Designed to extract text from video. Extract question description for videos if it does exist, including a time stamps',
-        link: 'https://github.com/SweatyCrayfish/Web-Scraping-NLP'
+        link: 'https://github.com/ViktorVeselov/Web-Scraping-NLP'
     },
     'Cyber-Security': {
         description: 'Test for most cybersecurity vulnerabilities before software release.',
-        link: 'https://github.com/SweatyCrayfish/Cyber-Security'
+        link: 'https://github.com/ViktorVeselov/Cyber-Security'
     },
     'Real-world-model-test': {
         description: 'We use the CRAFT test set, which contains about 1.2 million raw characters, for benchmarking the syntactic analysis pipeline, and the test split of the JNLPBA NER dataset, which contains about 101,000 tokens, for benchmarking the NER task.',
-        link: 'https://github.com/SweatyCrayfish/Real-world-model-test'
+        link: 'https://github.com/ViktorVeselov/Real-world-model-test'
     },
     'Google-Apps': {
         description: 'This project was created to increase the quality of app development and decrease the cost of app development by increasing the success rate of an app during its execution.',
-        link: 'https://github.com/SweatyCrayfish/Google-Apps'
+        link: 'https://github.com/ViktorVeselov/Google-Apps'
     }
 };
 
