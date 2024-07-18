@@ -252,3 +252,70 @@ footer {
 .background-animation .circle {
     animation: float 10s infinite;
 }
+
+/* Chatbot Styles */
+#chatbot-container {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 300px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    z-index: 1000;
+    font-family: 'Arial', sans-serif;
+}
+
+#chatbot-header {
+    background-color: #007bff;
+    padding: 10px;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#chatbot-body {
+    display: none;
+    flex-direction: column;
+    height: 400px;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+#chatbot-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+
+#chatbot-messages p {
+    background-color: #444;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+
+#chatbot-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: #333;
+    color: white;
+}
+
+#chatbot-send {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#chatbot-send:hover {
+    background-color: #0056b3;
+}
