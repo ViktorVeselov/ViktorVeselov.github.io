@@ -199,4 +199,3 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
         }
     }
 });
-
