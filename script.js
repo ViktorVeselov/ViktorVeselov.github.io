@@ -149,7 +149,26 @@ document.getElementById('chatbot-header').addEventListener('click', () => {
     }
 });
 
-document.getElementById('chatbot-send').addEventListener('click', () => {
+//document.getElementById('chatbot-send').addEventListener('click', () => {
+//    const input = document.getElementById('chatbot-input');
+//    const message = input.value.trim();
+//    if (message) {
+//        const messageElement = document.createElement('p');
+//        messageElement.textContent = message;
+//        document.getElementById('chatbot-messages').appendChild(messageElement);
+//        input.value = '';
+
+        // Simulate a response
+//        setTimeout(() => {
+//            const responseElement = document.createElement('p');
+//            responseElement.textContent = 'This is a simulated response.';
+//            responseElement.style.backgroundColor = '#555';
+//            document.getElementById('chatbot-messages').appendChild(responseElement);
+//        }, 1000);
+//    }
+//});
+
+document.getElementById('chatbot-send').addEventListener('click', async () => {
     const input = document.getElementById('chatbot-input');
     const message = input.value.trim();
     if (message) {
@@ -158,12 +177,26 @@ document.getElementById('chatbot-send').addEventListener('click', () => {
         document.getElementById('chatbot-messages').appendChild(messageElement);
         input.value = '';
 
-        // Simulate a response
-        setTimeout(() => {
+        // Fetch response from your API Gateway
+        try {
+            const response = await fetch('https://your-api-gateway-endpoint/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: message })
+            });
+            const data = await response.json();
             const responseElement = document.createElement('p');
-            responseElement.textContent = 'This is a simulated response.';
+            responseElement.textContent = data.choices[0].text;
             responseElement.style.backgroundColor = '#555';
             document.getElementById('chatbot-messages').appendChild(responseElement);
-        }, 1000);
+        } catch (error) {
+            const errorElement = document.createElement('p');
+            errorElement.textContent = 'Error: ' + error.message;
+            errorElement.style.backgroundColor = '#f00';
+            document.getElementById('chatbot-messages').appendChild(errorElement);
+        }
     }
 });
+
