@@ -158,6 +158,9 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
         document.getElementById('chatbot-messages').appendChild(messageElement);
         input.value = '';
 
+        // Debug: Log the message being sent
+        console.log('Sending message:', message);
+
         // Call the Lambda function through API Gateway
         try {
             const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
@@ -170,8 +173,15 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
                 })
             });
 
+            // Debug: Log the response status
+            console.log('Response status:', response.status);
+
             if (response.ok) {
                 const data = await response.json();
+
+                // Debug: Log the response data
+                console.log('Response data:', data);
+
                 const chatContent = JSON.parse(data.body).choices[0].message.content;
 
                 const responseElement = document.createElement('p');
