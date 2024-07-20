@@ -182,15 +182,7 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
                 // Debug: Log the response data
                 console.log('Response data:', data);
 
-                // Make sure body is defined and parse it
-                let responseBody;
-                try {
-                    responseBody = JSON.parse(data.body);
-                } catch (e) {
-                    throw new Error('Invalid JSON in response body');
-                }
-
-                const chatContent = responseBody.choices[0].message.content;
+                const chatContent = data.choices[0].message.content;
 
                 const responseElement = document.createElement('p');
                 responseElement.textContent = chatContent;
