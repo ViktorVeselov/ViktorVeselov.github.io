@@ -149,9 +149,7 @@ document.getElementById('chatbot-header').addEventListener('click', () => {
     }
 });
 
-document.getElementById('chatForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
+document.getElementById('chatbot-send').addEventListener('click', async () => {
     const input = document.getElementById('chatbot-input');
     const message = input.value.trim();
     if (message) {
@@ -160,23 +158,35 @@ document.getElementById('chatForm').addEventListener('submit', async (event) => 
         document.getElementById('chatbot-messages').appendChild(messageElement);
         input.value = '';
 
-        const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                prompt: message
-            })
-        });
+        // Call the Lambda function through API Gateway
+        try {
+            const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prompt: message
+                })
+            });
 
-        const data = await response.json();
-        const chatContent = JSON.parse(data.body).choices[0].message.content;
+            if (response.ok) {
+                const data = await response.json();
+                const chatContent = JSON.parse(data.body).choices[0].message.content;
 
-        const responseElement = document.createElement('p');
-        responseElement.textContent = chatContent;
-        responseElement.style.backgroundColor = '#555';
-        document.getElementById('chatbot-messages').appendChild(responseElement);
+                const responseElement = document.createElement('p');
+                responseElement.textContent = chatContent;
+                responseElement.style.backgroundColor = '#555';
+                document.getElementById('chatbot-messages').appendChild(responseElement);
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+        } catch (error) {
+            console.error('There was a problem with the fetch operation:', error);
+            const errorElement = document.createElement('p');
+            errorElement.textContent = 'Error: Unable to get a response.';
+            errorElement.style.backgroundColor = '#555';
+            document.getElementById('chatbot-messages').appendChild(errorElement);
+        }
     }
 });
-
