@@ -183,7 +183,12 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
                 // Debug: Log the response data
                 console.log('Response data:', data);
 
-                const chatContent = JSON.parse(data.body).choices[0].message.content;
+                // Check if data.body is a string or an object
+                if (typeof data.body === 'string') {
+                    data.body = JSON.parse(data.body);
+                }
+
+                const chatContent = data.choices[0].message.content;
 
                 const responseElement = document.createElement('p');
                 responseElement.textContent = chatContent;
