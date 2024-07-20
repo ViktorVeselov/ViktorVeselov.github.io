@@ -149,37 +149,34 @@ document.getElementById('chatbot-header').addEventListener('click', () => {
     }
 });
 
-//document.getElementById('chatbot-send').addEventListener('click', () => {
-//    const input = document.getElementById('chatbot-input');
-//    const message = input.value.trim();
-//    if (message) {
-//        const messageElement = document.createElement('p');
-//        messageElement.textContent = message;
-//        document.getElementById('chatbot-messages').appendChild(messageElement);
-//        input.value = '';
+document.getElementById('chatForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-        // Simulate a response
-//        setTimeout(() => {
-//            const responseElement = document.createElement('p');
-//            responseElement.textContent = 'This is a simulated response.';
-//            responseElement.style.backgroundColor = '#555';
-//            document.getElementById('chatbot-messages').appendChild(responseElement);
-//        }, 1000);
-//    }
-//});
+    const input = document.getElementById('chatbot-input');
+    const message = input.value.trim();
+    if (message) {
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        document.getElementById('chatbot-messages').appendChild(messageElement);
+        input.value = '';
 
+        const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                prompt: message
+            })
+        });
 
-document.getElementById('submit').addEventListener('click', async () => {
-  const userInput = document.getElementById('user-input').value;
+        const data = await response.json();
+        const chatContent = JSON.parse(data.body).choices[0].message.content;
 
-  const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ prompt: userInput }),
-  });
-
-  const data = await response.json();
-  document.getElementById('response').innerText = data.choices[0].text;
+        const responseElement = document.createElement('p');
+        responseElement.textContent = chatContent;
+        responseElement.style.backgroundColor = '#555';
+        document.getElementById('chatbot-messages').appendChild(responseElement);
+    }
 });
+
