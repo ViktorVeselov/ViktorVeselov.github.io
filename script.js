@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     responseElement.style.backgroundColor = '#555';
                     document.getElementById('chatbot-messages').appendChild(responseElement);
                 } else {
+                    console.error('Network response was not ok.', response.statusText);
                     throw new Error('Network response was not ok.');
                 }
             } catch (error) {
