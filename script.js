@@ -179,7 +179,7 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
 
         // Fetch response from your API Gateway
         try {
-            const response = await fetch('https://your-api-gateway-endpoint/chat', {
+            const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
