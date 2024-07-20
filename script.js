@@ -169,33 +169,33 @@ document.getElementById('chatbot-header').addEventListener('click', () => {
 //});
 
 document.getElementById('chatbot-send').addEventListener('click', async () => {
-    const input = document.getElementById('chatbot-input');
-    const message = input.value.trim();
-    if (message) {
-        const messageElement = document.createElement('p');
-        messageElement.textContent = message;
-        document.getElementById('chatbot-messages').appendChild(messageElement);
-        input.value = '';
+  const input = document.getElementById('chatbot-input');
+  const message = input.value.trim();
+  if (message) {
+    const messageElement = document.createElement('p');
+    messageElement.textContent = message;
+    document.getElementById('chatbot-messages').appendChild(messageElement);
+    input.value = '';
 
-        // Fetch response from your API Gateway
-        try {
-            const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ prompt: message })
-            });
-            const data = await response.json();
-            const responseElement = document.createElement('p');
-            responseElement.textContent = data.choices[0].text;
-            responseElement.style.backgroundColor = '#555';
-            document.getElementById('chatbot-messages').appendChild(responseElement);
-        } catch (error) {
-            const errorElement = document.createElement('p');
-            errorElement.textContent = 'Error: ' + error.message;
-            errorElement.style.backgroundColor = '#f00';
-            document.getElementById('chatbot-messages').appendChild(errorElement);
-        }
+    // Fetch response from your API Gateway
+    try {
+      const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prompt: message })
+      });
+      const data = await response.json();
+      const responseElement = document.createElement('p');
+      responseElement.textContent = data.choices[0].text;
+      responseElement.style.backgroundColor = '#555';
+      document.getElementById('chatbot-messages').appendChild(responseElement);
+    } catch (error) {
+      const errorElement = document.createElement('p');
+      errorElement.textContent = 'Error: ' + error.message;
+      errorElement.style.backgroundColor = '#f00';
+      document.getElementById('chatbot-messages').appendChild(errorElement);
     }
+  }
 });
