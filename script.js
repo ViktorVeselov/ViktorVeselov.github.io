@@ -140,67 +140,68 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-// Chatbot functionality
-document.getElementById('chatbot-header').addEventListener('click', () => {
-    const chatbotBody = document.getElementById('chatbot-body');
-    if (chatbotBody.style.display === 'none' || chatbotBody.style.display === '') {
-        chatbotBody.style.display = 'flex';
-    } else {
-        chatbotBody.style.display = 'none';
-    }
-});
-
-document.getElementById('chatbot-send').addEventListener('click', async () => {
-    const input = document.getElementById('chatbot-input');
-    const message = input.value.trim();
-    if (message) {
-        const messageElement = document.createElement('p');
-        messageElement.textContent = message;
-        document.getElementById('chatbot-messages').appendChild(messageElement);
-        input.value = '';
-
-        // Debug: Log the message being sent
-        console.log('Sending message:', message);
-
-        // Call the Lambda function through API Gateway
-        try {
-            const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    prompt: message
-                })
-            });
-
-            // Debug: Log the response status
-            console.log('Response status:', response.status);
-
-            if (response.ok) {
-                const data = await response.json();
-
-                // Debug: Log the response data
-                console.log('Response data:', data);
-
-                // Ensure data.body is parsed from string to object
-                const responseBody = JSON.parse(data.body);
-
-                const chatContent = responseBody.choices[0].message.content;
-
-                const responseElement = document.createElement('p');
-                responseElement.textContent = chatContent;
-                responseElement.style.backgroundColor = '#555';
-                document.getElementById('chatbot-messages').appendChild(responseElement);
-            } else {
-                throw new Error('Network response was not ok.');
-            }
-        } catch (error) {
-            console.error('There was a problem with the fetch operation:', error);
-            const errorElement = document.createElement('p');
-            errorElement.textContent = 'Error: Unable to get a response.';
-            errorElement.style.backgroundColor = '#555';
-            document.getElementById('chatbot-messages').appendChild(errorElement);
+    // Chatbot functionality
+    document.getElementById('chatbot-header').addEventListener('click', () => {
+        const chatbotBody = document.getElementById('chatbot-body');
+        if (chatbotBody.style.display === 'none' || chatbotBody.style.display === '') {
+            chatbotBody.style.display = 'flex';
+        } else {
+            chatbotBody.style.display = 'none';
         }
-    }
+    });
+
+    document.getElementById('chatbot-send').addEventListener('click', async () => {
+        const input = document.getElementById('chatbot-input');
+        const message = input.value.trim();
+        if (message) {
+            const messageElement = document.createElement('p');
+            messageElement.textContent = message;
+            document.getElementById('chatbot-messages').appendChild(messageElement);
+            input.value = '';
+
+            // Debug: Log the message being sent
+            console.log('Sending message:', message);
+
+            // Call the Lambda function through API Gateway
+            try {
+                const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        prompt: message
+                    })
+                });
+
+                // Debug: Log the response status
+                console.log('Response status:', response.status);
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Debug: Log the response data
+                    console.log('Response data:', data);
+
+                    // Ensure data.body is parsed from string to object
+                    const responseBody = JSON.parse(data.body);
+
+                    const chatContent = responseBody.choices[0].message.content;
+
+                    const responseElement = document.createElement('p');
+                    responseElement.textContent = chatContent;
+                    responseElement.style.backgroundColor = '#555';
+                    document.getElementById('chatbot-messages').appendChild(responseElement);
+                } else {
+                    throw new Error('Network response was not ok.');
+                }
+            } catch (error) {
+                console.error('There was a problem with the fetch operation:', error);
+                const errorElement = document.createElement('p');
+                errorElement.textContent = 'Error: Unable to get a response.';
+                errorElement.style.backgroundColor = '#555';
+                document.getElementById('chatbot-messages').appendChild(errorElement);
+            }
+        }
+    });
 });
