@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Debug: Log the response status
                 console.log('Response status:', response.status);
+                console.log('Response:', response);
 
                 if (response.ok) {
                     const data = await response.json();
@@ -193,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     responseElement.style.backgroundColor = '#555';
                     document.getElementById('chatbot-messages').appendChild(responseElement);
                 } else {
-                    throw new Error('Network response was not ok.');
+                    throw new Error(`Network response was not ok. Status: ${response.status}`);
                 }
             } catch (error) {
                 console.error('There was a problem with the fetch operation:', error);
