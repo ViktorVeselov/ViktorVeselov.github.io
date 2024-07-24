@@ -1,9 +1,19 @@
+:root {
+    --gradient-start: #2c3e50;
+    --gradient-end: #4ca1af;
+    --text-color-light: #ffffff;
+    --text-color-dark: #000000;
+    --icon-color: #ff7700; /* Dark orange */
+}
+
 body, html {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    color: #fff;
-    background-color: #000;
+    color: var(--text-color-light);
+    background: linear-gradient(135deg, var(--gradient-start) 25%, var(--gradient-end) 75%);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
     overflow-x: hidden;
     scroll-behavior: smooth;
 }
@@ -13,16 +23,19 @@ body, html {
     justify-content: space-between;
     align-items: center;
     padding: 20px 40px;
-    background-color: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .navbar .logo {
     font-size: 1.5em;
     font-weight: bold;
+    color: var(--text-color-light);
 }
 
 .navbar .nav-links {
@@ -37,8 +50,13 @@ body, html {
 
 .navbar .nav-links li a {
     text-decoration: none;
-    color: #fff;
+    color: var(--text-color-light);
     font-weight: bold;
+}
+
+.navbar .contact-button {
+    margin-left: auto; /* This moves the button to the right */
+    margin-right: 50px; /* Adjust this value to move the button toward the center */
 }
 
 .navbar .contact-button a {
@@ -61,9 +79,11 @@ body, html {
     flex-direction: column;
     height: 100vh;
     text-align: center;
-    background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 100%);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
     position: relative;
     overflow: hidden;
+    color: var(--text-color-light);
 }
 
 .hero-section .hero-content {
@@ -109,14 +129,15 @@ body, html {
 .background-animation .circle {
     width: 100px;
     height: 100px;
-    background-color: rgba(0, 150, 255, 0.5);
+    background-color: #0056b3;
     border-radius: 50%;
     position: absolute;
 }
 
 .content-section {
     padding: 100px 20px;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
     margin: 20px;
     border-radius: 10px;
     min-height: 100vh;
@@ -124,11 +145,13 @@ body, html {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 section h2 {
     font-size: 2em;
     margin-bottom: 20px;
+    color: var(--text-color-light);
 }
 
 section p {
@@ -150,20 +173,23 @@ section p {
     width: 100px;
     text-align: center;
     margin: 10px;
+    color: var(--text-color-light);
 }
 
 #skills .skill i {
     font-size: 3em;
     margin-bottom: 10px;
+    color: var(--icon-color);
 }
 
 .chart-container {
     width: 400px;
     height: 400px;
     margin-top: 20px;
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     padding: 20px;
+    backdrop-filter: blur(10px);
 }
 
 #projects {
@@ -178,31 +204,33 @@ section p {
 }
 
 .project-frame {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s ease, background 0.3s ease;
+    backdrop-filter: blur(10px);
 }
 
 .project-frame:hover {
     transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.9);
 }
 
 #project-description-container {
     margin-top: 20px;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
     display: none;
     animation: fadeIn 1s ease-in-out;
+    backdrop-filter: blur(10px);
 }
 
 #learn-more {
     display: block;
     margin-top: 10px;
-    color: #00f;
+    color: var(--text-color-light);
     text-decoration: none;
 }
 
@@ -213,8 +241,10 @@ section p {
 footer {
     text-align: center;
     padding: 10px;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     width: 100%;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 @keyframes fadeInUp {
@@ -259,11 +289,13 @@ footer {
     bottom: 0;
     right: 20px;
     width: 300px;
-    background-color: rgba(0, 0, 0, 0.9);
+    background: rgba(0, 0, 0, 0.7);
     border-radius: 10px 10px 0 0;
     overflow: hidden;
     z-index: 1000;
     font-family: 'Arial', sans-serif;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 #chatbot-header {
@@ -290,10 +322,11 @@ footer {
 }
 
 #chatbot-messages p {
-    background-color: #444;
+    background-color: rgba(255, 255, 255, 0.1);
     padding: 10px;
     border-radius: 10px;
     margin: 5px 0;
+    backdrop-filter: blur(10px);
 }
 
 #chatbot-input {
@@ -302,12 +335,13 @@ footer {
     border-radius: 5px;
     border: none;
     outline: none;
-    background-color: #333;
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
+    backdrop-filter: blur(10px);
 }
 
 #chatbot-send {
-    background-color: #007bff;
+    background-color: #ff7700;
     color: white;
     padding: 10px;
     border: none;
@@ -318,4 +352,16 @@ footer {
 
 #chatbot-send:hover {
     background-color: #0056b3;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }

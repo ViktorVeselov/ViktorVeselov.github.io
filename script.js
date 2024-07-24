@@ -158,10 +158,6 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
         document.getElementById('chatbot-messages').appendChild(messageElement);
         input.value = '';
 
-        // Debug: Log the message being sent
-        console.log('Sending message:', message);
-
-        // Call the Lambda function through API Gateway
         try {
             const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
                 method: 'POST',
@@ -173,21 +169,25 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
                 })
             });
 
-            // Debug: Log the response status
-            console.log('Response status:', response.status);
-
             if (response.ok) {
                 const data = await response.json();
-
-                // Debug: Log the response data
-                console.log('Response data:', data);
-
                 const chatContent = data.choices[0].message.content;
 
                 const responseElement = document.createElement('p');
                 responseElement.textContent = chatContent;
                 responseElement.style.backgroundColor = '#555';
                 document.getElementById('chatbot-messages').appendChild(responseElement);
+
+                // Example of adding a quick reply button
+                const buttonsContainer = document.getElementById('chatbot-buttons');
+                buttonsContainer.innerHTML = '';
+                const quickReply = document.createElement('button');
+                quickReply.textContent = 'Tell me more';
+                quickReply.onclick = () => {
+                    document.getElementById('chatbot-input').value = 'Tell me more about that.';
+                    document.getElementById('chatbot-send').click();
+                };
+                buttonsContainer.appendChild(quickReply);
             } else {
                 throw new Error('Network response was not ok.');
             }
