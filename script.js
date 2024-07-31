@@ -149,7 +149,7 @@ document.getElementById('chatbot-header').addEventListener('click', () => {
     }
 });
 
-document.getElementById('chatbot-send').addEventListener('click', async () => {
+async function sendMessage() {
     const input = document.getElementById('chatbot-input');
     const message = input.value.trim();
     if (message) {
@@ -185,7 +185,7 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
                 quickReply.textContent = 'Tell me more';
                 quickReply.onclick = () => {
                     document.getElementById('chatbot-input').value = 'Tell me more about that.';
-                    document.getElementById('chatbot-send').click();
+                    sendMessage();
                 };
                 buttonsContainer.appendChild(quickReply);
             } else {
@@ -198,5 +198,13 @@ document.getElementById('chatbot-send').addEventListener('click', async () => {
             errorElement.style.backgroundColor = '#555';
             document.getElementById('chatbot-messages').appendChild(errorElement);
         }
+    }
+}
+
+document.getElementById('chatbot-send').addEventListener('click', sendMessage);
+
+document.getElementById('chatbot-input').addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        sendMessage();
     }
 });
