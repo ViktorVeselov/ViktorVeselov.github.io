@@ -142,21 +142,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Chatbot functionality
 document.getElementById('chatbot-header').addEventListener('click', () => {
     const chatbotBody = document.getElementById('chatbot-body');
-    if (chatbotBody.style.display === 'none' || chatbotBody.style.display === '') {
-        chatbotBody.style.display = 'flex';
-    } else {
-        chatbotBody.style.display = 'none';
-    }
+    chatbotBody.style.display = chatbotBody.style.display === 'none' || chatbotBody.style.display === '' ? 'flex' : 'none';
 });
 
 async function sendMessage() {
     const input = document.getElementById('chatbot-input');
     const message = input.value.trim();
     if (message) {
-        const messageElement = document.createElement('p');
-        messageElement.textContent = message;
-        document.getElementById('chatbot-messages').appendChild(messageElement);
-        input.value = '';
+        appendMessage(message, 'user');
 
         try {
             const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
@@ -164,41 +157,46 @@ async function sendMessage() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    prompt: message
-                })
+                body: JSON.stringify({ prompt: message })
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                const chatContent = data.choices[0].message.content;
-
-                const responseElement = document.createElement('p');
-                responseElement.textContent = chatContent;
-                responseElement.style.backgroundColor = '#555';
-                document.getElementById('chatbot-messages').appendChild(responseElement);
-
-                // Example of adding a quick reply button
-                const buttonsContainer = document.getElementById('chatbot-buttons');
-                buttonsContainer.innerHTML = '';
-                const quickReply = document.createElement('button');
-                quickReply.textContent = 'Tell me more';
-                quickReply.onclick = () => {
-                    document.getElementById('chatbot-input').value = 'Tell me more about that.';
-                    sendMessage();
-                };
-                buttonsContainer.appendChild(quickReply);
-            } else {
-                throw new Error('Network response was not ok.');
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.statusText}`);
             }
+
+            const data = await response.json();
+            const chatContent = data.choices[0].message.content;
+
+            appendMessage(chatContent, 'bot');
+            addQuickReplyButton('Tell me more', 'Tell me more about that.');
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            const errorElement = document.createElement('p');
-            errorElement.textContent = 'Error: Unable to get a response.';
-            errorElement.style.backgroundColor = '#555';
-            document.getElementById('chatbot-messages').appendChild(errorElement);
+            appendMessage('Error: Unable to get a response.', 'error');
         }
     }
+}
+
+function appendMessage(text, type) {
+    const messageElement = document.createElement('p');
+    messageElement.textContent = text;
+    if (type === 'bot') {
+        messageElement.style.backgroundColor = '#555';
+    } else if (type === 'error') {
+        messageElement.style.backgroundColor = 'red';
+    }
+    document.getElementById('chatbot-messages').appendChild(messageElement);
+}
+
+function addQuickReplyButton(text, reply) {
+    const buttonsContainer = document.getElementById('chatbot-buttons');
+    buttonsContainer.innerHTML = '';
+    const quickReply = document.createElement('button');
+    quickReply.textContent = text;
+    quickReply.onclick = () => {
+        document.getElementById('chatbot-input').value = reply;
+        sendMessage();
+    };
+    buttonsContainer.appendChild(quickReply);
 }
 
 document.getElementById('chatbot-send').addEventListener('click', sendMessage);
