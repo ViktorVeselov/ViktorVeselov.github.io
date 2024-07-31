@@ -150,6 +150,7 @@ async function sendMessage() {
     const message = input.value.trim();
     if (message) {
         appendMessage(message, 'user');
+        input.value = '';
 
         try {
             const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
@@ -165,10 +166,15 @@ async function sendMessage() {
             }
 
             const data = await response.json();
-            const chatContent = data.choices[0].message.content;
+            console.log('API Response:', data);  // Log the entire response for inspection
 
-            appendMessage(chatContent, 'bot');
-            addQuickReplyButton('Tell me more', 'Tell me more about that.');
+            if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                const chatContent = data.choices[0].message.content;
+                appendMessage(chatContent, 'bot');
+                addQuickReplyButton('Tell me more', 'Tell me more about that.');
+            } else {
+                throw new Error('Response structure is not as expected.');
+            }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
             appendMessage('Error: Unable to get a response.', 'error');
