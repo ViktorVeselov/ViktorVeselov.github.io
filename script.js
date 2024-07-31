@@ -171,7 +171,6 @@ async function sendMessage() {
             if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
                 const chatContent = data.choices[0].message.content;
                 appendMessage(chatContent, 'bot');
-                addQuickReplyButton('Tell me more', 'Tell me more about that.');
             } else {
                 throw new Error('Response structure is not as expected.');
             }
@@ -191,18 +190,6 @@ function appendMessage(text, type) {
         messageElement.style.backgroundColor = 'red';
     }
     document.getElementById('chatbot-messages').appendChild(messageElement);
-}
-
-function addQuickReplyButton(text, reply) {
-    const buttonsContainer = document.getElementById('chatbot-buttons');
-    buttonsContainer.innerHTML = '';
-    const quickReply = document.createElement('button');
-    quickReply.textContent = text;
-    quickReply.onclick = () => {
-        document.getElementById('chatbot-input').value = reply;
-        sendMessage();
-    };
-    buttonsContainer.appendChild(quickReply);
 }
 
 document.getElementById('chatbot-send').addEventListener('click', sendMessage);
