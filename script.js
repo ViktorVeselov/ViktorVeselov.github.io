@@ -176,7 +176,7 @@ async function sendMessage() {
             }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            appendMessage('Error: Unable to get a response.', 'error');
+            //appendMessage('Error: Unable to get a response.', 'error');
         }
     }
 }
