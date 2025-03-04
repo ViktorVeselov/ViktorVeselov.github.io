@@ -14,10 +14,10 @@ const projectStats = {
     updatedAt: 'Last updated: Oct 5, 2023'
   },
   'Ubuntu Llama-2-7B': {
-    downloads: "2k+",
-    stars: 4,
+    downloads: "27",
+    stars: 6,
     lastUpdated: '2023-10-05',
-    updatedAt: 'Last updated: Oct 15, 2023'
+    updatedAt: 'Last updated: Dec 8, 2023'
   },
   'SweatyCrayfish/llama-3-8b-quantized': {
     downloads: "888 monthly",
