@@ -32,24 +32,18 @@ const projects = {
 
 // Get all project frames
 const projectFrames = document.querySelectorAll('.project-frame');
-
 // Get the project description element
 const projectDescriptionElement = document.getElementById('project-description');
-
 // Get the learn more link
 const learnMoreLink = document.getElementById('learn-more');
 
-// Add event listeners to project frames
+// Event listeners to project frames
 projectFrames.forEach(frame => {
     frame.addEventListener('click', () => {
         // Retrieve the project name from the data attribute
         const projectName = frame.getAttribute('data-project');
-
-        // Update the project description and learn more link
         projectDescriptionElement.textContent = projects[projectName].description;
         learnMoreLink.href = projects[projectName].link;
-
-        // Add active class to the current project frame and description container
         projectFrames.forEach(f => f.classList.remove('active'));
         frame.classList.add('active');
         document.getElementById('project-description-container').classList.add('active');
@@ -139,7 +133,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// ----------------------------------------------------------------------------------
 // Chatbot functionality
+// ----------------------------------------------------------------------------------
+
+let chatHistory = [];
+
 document.getElementById('chatbot-header').addEventListener('click', () => {
     const chatbotBody = document.getElementById('chatbot-body');
     chatbotBody.style.display = chatbotBody.style.display === 'none' || chatbotBody.style.display === '' ? 'flex' : 'none';
@@ -151,6 +150,7 @@ async function sendMessage() {
     if (message) {
         appendMessage(message, 'user');
         input.value = '';
+        chatHistory.push({ role: 'user', content: message });
 
         try {
             const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
@@ -158,7 +158,7 @@ async function sendMessage() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ prompt: message })
+                body: JSON.stringify({ messages: chatHistory })
             });
 
             if (!response.ok) {
@@ -166,17 +166,18 @@ async function sendMessage() {
             }
 
             const data = await response.json();
-            console.log('API Response:', data);  // Log the entire response for inspection
+            console.log('API Response:', data); 
 
             if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
                 const chatContent = data.choices[0].message.content;
                 appendMessage(chatContent, 'bot');
+                chatHistory.push({ role: 'assistant', content: chatContent });
+
             } else {
                 throw new Error('Response structure is not as expected.');
             }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
-            //appendMessage('Error: Unable to get a response.', 'error');
         }
     }
 }
@@ -193,7 +194,6 @@ function appendMessage(text, type) {
 }
 
 document.getElementById('chatbot-send').addEventListener('click', sendMessage);
-
 document.getElementById('chatbot-input').addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         sendMessage();
