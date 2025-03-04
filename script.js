@@ -202,30 +202,22 @@ async function sendMessage() {
 }
 
 function appendMessage(text, type) {
-    console.log(`Appending message of type '${type}':`, text);
-    
     const messageElement = document.createElement('p');
     messageElement.textContent = text;
-    
-    // Add the appropriate class based on the message type
-    if (type === 'error') {
-        messageElement.className = 'error';
+    if (type === 'bot') {
+        messageElement.style.backgroundColor = '#555';
+    } else if (type === 'user') {
+        messageElement.style.backgroundColor = '#4a89dc';
+    } else if (type === 'error') {
+        messageElement.style.backgroundColor = 'red';
     }
     
-    // The CSS will handle the styling based on the element position
-    // (odd for user, even for bot) except for error messages
-    
     const messagesContainer = document.getElementById('chatbot-messages');
-    
     if (messagesContainer) {
         messagesContainer.appendChild(messageElement);
         
-        // Auto-scroll to the bottom when new messages are added
+        // Add auto-scroll - this won't affect your CSS but improves usability
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        
-        console.log('Message appended successfully');
-    } else {
-        console.error('Could not find chatbot-messages element');
     }
 }
 
