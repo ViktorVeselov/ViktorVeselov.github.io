@@ -1,41 +1,39 @@
-// Create a new file called project-stats.js
+// project-stats.js
 
-// Manually updated project statistics
 const projectStats = {
   'RTST': {
-    downloads: 25k+,
+    downloads: "25k+",
     stars: 0,
     lastUpdated: '2023-09-15',
     updatedAt: 'Last updated: Oct 10, 2023'
   },
   'Simple Deployment': {
-    downloads: '2k+',
+    downloads: "2k+",
     stars: 1,
     lastUpdated: '2023-08-20',
     updatedAt: 'Last updated: Oct 5, 2023'
   },
   'Ubuntu Llama-2-7B': {
-    downloads: '2k+',
+    downloads: "2k+",
     stars: 4,
     lastUpdated: '2023-10-05',
     updatedAt: 'Last updated: Oct 15, 2023'
   },
-
   'SweatyCrayfish/llama-3-8b-quantized': {
-    downloads: '888 monthly',
+    downloads: "888 monthly",
     stars: 10,
     lastUpdated: '2024-04',
     updatedAt: '2024-04'
   },
   'light-distribution-analysis': {
-    downloads: '8k+',
+    downloads: "8k+",
     stars: 3,
     lastUpdated: '2024-07',
     updatedAt: '2024-07'
   },
 };
 
-// Function to format numbers for better readability
+// Utility to format numbers for better readability
 function formatNumber(num) {
   if (num >= 1000) {
     return (num / 1000).toFixed(1) + 'k';
@@ -43,23 +41,23 @@ function formatNumber(num) {
   return num.toString();
 }
 
-// Function to display project statistics
+// Displays the stats for a specific project in #project-stats container
 function displayProjectStats(projectName) {
   const statsContainer = document.getElementById('project-stats');
   if (!statsContainer) return;
-  
-  // Get stats for the selected project
+
+  // Get the stats for this project
   const stats = projectStats[projectName];
   if (!stats) {
     statsContainer.innerHTML = '<p>No statistics available for this project.</p>';
     return;
   }
-  
-  // Display the statistics with icons
+
+  // Render the stats with icons
   statsContainer.innerHTML = `
     <div class="stat-item">
       <i class="fas fa-download"></i>
-      <span>${formatNumber(stats.downloads)}</span>
+      <span>${stats.downloads}</span>
       <p>Downloads</p>
     </div>
     <div class="stat-item">
@@ -76,62 +74,62 @@ function displayProjectStats(projectName) {
       <p class="stats-update-info">${stats.updatedAt}</p>
     </div>
   `;
-  
-  // Add animation to make the numbers count up
+
   const statValues = statsContainer.querySelectorAll('.stat-item span');
   statValues.forEach(span => {
-    // Skip the date value
-    if (span.textContent.includes('-')) return;
-    
-    const finalValue = parseInt(span.textContent.replace('k', '000'));
+    if (span.textContent.includes('-') || span.textContent.match(/[^\d]/)) {
+      return;
+    }
+
+    let text = span.textContent.replace('k', '000').replace('+', '');
+    const finalValue = parseInt(text, 10);
+    if (isNaN(finalValue)) return;
+
+    // Animate from 0 to finalValue
     let startValue = 0;
-    const duration = 1500;
-    const frameRate = 20;
+    const duration = 1500;  
+    const frameRate = 20;   
     const increment = finalValue / (duration / frameRate);
-    
+
     const counter = setInterval(() => {
       startValue += increment;
-      
       if (startValue >= finalValue) {
-        span.textContent = span.textContent.includes('k') ? 
-          formatNumber(finalValue) : finalValue;
+        span.textContent = formatNumber(finalValue);
         clearInterval(counter);
       } else {
-        span.textContent = span.textContent.includes('k') ? 
-          formatNumber(Math.floor(startValue)) : Math.floor(startValue);
+        span.textContent = formatNumber(Math.floor(startValue));
       }
     }, frameRate);
   });
 }
 
-// Add this to your existing event listeners for project frames
+// Sets up click listeners on each .project-frame, plus default project
 function enhanceProjectFrames() {
-  // Get all project frames
   const projectFrames = document.querySelectorAll('.project-frame');
-  
-  // Create container for project stats if it doesn't exist
   let statsContainer = document.getElementById('project-stats');
   if (!statsContainer) {
     statsContainer = document.createElement('div');
     statsContainer.id = 'project-stats';
     statsContainer.className = 'project-stats-container';
     
-    // Insert stats container after project description
+    // Insert stats container after #project-description-container
     const projectDescContainer = document.getElementById('project-description-container');
-    if (projectDescContainer) {
-      projectDescContainer.parentNode.insertBefore(statsContainer, 
-        projectDescContainer.nextSibling);
+    if (projectDescContainer && projectDescContainer.parentNode) {
+      projectDescContainer.parentNode.insertBefore(statsContainer, projectDescContainer.nextSibling);
     }
   }
   
-  // Add click event listeners to project frames
   projectFrames.forEach(frame => {
-    frame.addEventListener('click', function() {
-      const projectName = this.getAttribute('data-project');
+    frame.addEventListener('click', () => {
+      const projectName = frame.getAttribute('data-project');
       displayProjectStats(projectName);
     });
   });
+
+  // Display a default project's stats on page load
+  const defaultProject = 'RTST'; 
+  displayProjectStats(defaultProject);
 }
 
-// Initialize when the document is loaded
+// Initialize once DOM is ready
 document.addEventListener('DOMContentLoaded', enhanceProjectFrames);
