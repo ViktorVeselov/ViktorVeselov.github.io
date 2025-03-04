@@ -178,12 +178,10 @@ async function sendMessage() {
         input.value = '';
         chatHistory.push({ role: 'user', content: message });
 
-        // Create a placeholder for the streaming message
-        const botMessageId = 'msg-' + Date.now();
-        appendStreamingMessage(botMessageId);
+        // Add thinking indicator
+        const thinkingId = appendThinkingIndicator();
 
         try {
-            // Get chunks of the response with fetch
             const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
                 method: 'POST',
                 headers: {
@@ -199,85 +197,43 @@ async function sendMessage() {
             const data = await response.json();
             console.log('API Response:', data);
 
+            // Remove thinking indicator
+            removeThinkingIndicator(thinkingId);
+
             let chatContent = null;
             
             // Try to get the response content using different possible structures
             if (data.response) {
+                // If the API returns { response: "message" }
                 chatContent = data.response;
             } else if (data.body) {
+                // If the API returns the Lambda response structure with a body field
                 try {
+                    // The body might be a string that needs parsing
                     const parsedBody = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
                     chatContent = parsedBody.response;
                 } catch (error) {
                     console.error('Error parsing response body:', error);
                 }
             } else if (data.choices && data.choices[0] && data.choices[0].message) {
+                // If using standard OpenAI API format
                 chatContent = data.choices[0].message.content;
             }
 
-            // Update the placeholder with completed message, simulating typing effect
             if (chatContent) {
-                simulateTypingEffect(botMessageId, chatContent);
+                appendMessage(chatContent, 'bot');
                 chatHistory.push({ role: 'assistant', content: chatContent });
             } else {
                 throw new Error('Could not extract response content from API response');
             }
         } catch (error) {
-            // Remove streaming message in case of error
-            const streamingMsg = document.getElementById(botMessageId);
-            if (streamingMsg) {
-                streamingMsg.remove();
-            }
+            // Remove thinking indicator in case of error
+            removeThinkingIndicator(thinkingId);
             
             console.error('There was a problem with the fetch operation:', error);
             appendMessage('Sorry, I encountered an error. Please try again.', 'error');
         }
     }
-}
-function appendStreamingMessage(id) {
-    const messageElement = document.createElement('p');
-    messageElement.id = id;
-    messageElement.className = 'bot-message';
-    messageElement.style.backgroundColor = '#555';
-    messageElement.textContent = '';
-    
-    const messagesContainer = document.getElementById('chatbot-messages');
-    if (messagesContainer) {
-        messagesContainer.appendChild(messageElement);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-    }
-    
-    return id;
-}
-
-// Function to simulate a typing effect for the response
-function simulateTypingEffect(messageId, fullText) {
-    const messageElement = document.getElementById(messageId);
-    if (!messageElement) return;
-
-    let charIndex = 0;
-    const typingDelay = 10; // milliseconds per character
-    
-    // Start with cursor
-    messageElement.textContent = '|';
-    
-    const typingInterval = setInterval(() => {
-        if (charIndex < fullText.length) {
-            // Replace cursor with text typed so far plus cursor
-            messageElement.textContent = fullText.slice(0, charIndex + 1) + '|';
-            charIndex++;
-            
-            // Auto-scroll as typing happens
-            const messagesContainer = document.getElementById('chatbot-messages');
-            if (messagesContainer) {
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-        } else {
-            // When done, remove cursor
-            messageElement.textContent = fullText;
-            clearInterval(typingInterval);
-        }
-    }, typingDelay);
 }
 
 function appendMessage(text, type) {
@@ -285,18 +241,17 @@ function appendMessage(text, type) {
     messageElement.textContent = text;
     if (type === 'bot') {
         messageElement.style.backgroundColor = '#555';
-        messageElement.className = 'bot-message';
     } else if (type === 'user') {
         messageElement.style.backgroundColor = '#4a89dc';
-        messageElement.className = 'user-message';
     } else if (type === 'error') {
         messageElement.style.backgroundColor = 'red';
-        messageElement.className = 'error-message';
     }
     
     const messagesContainer = document.getElementById('chatbot-messages');
     if (messagesContainer) {
         messagesContainer.appendChild(messageElement);
+        
+        // Add auto-scroll - this won't affect your CSS but improves usability
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 }
