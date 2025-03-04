@@ -4,7 +4,7 @@ console.log("Treemap.js loaded");
 document.addEventListener('DOMContentLoaded', function() {
   console.log("DOM Content Loaded - Initializing Skills Treemap");
   
-  // First, let's make sure the container is visible
+  // First, let's make sure the main treemap container is visible
   const container = document.getElementById('skills-treemap-container');
   if (container) {
     // Add a visible background so we can see if the container is there
@@ -75,17 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("Creating skills treemap");
     if (!container) return;
     
-    // Clear the container
+    // Clear the treemap container before re-rendering
     container.innerHTML = '';
     
-    // Set dimensions - use explicit dimensions
+    // Set dimensions - use explicit dimensions for the treemap
     const width = 800;
     const height = 500;
     
     console.log(`Creating SVG with dimensions ${width}x${height}`);
     
     try {
-      // Create SVG element
+      // Create SVG element for the treemap
       const svg = d3.select('#skills-treemap-container')
         .append('svg')
         .attr('width', width)
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const colorScale = d3.scaleOrdinal()
         .domain(["Programming Languages", "AI & ML", "Web Development", "Cloud & DevOps"])
         .range(["#4a89dc", "#ff7700", "#50C878", "#9370DB"]);
-        
+
       // Create a hierarchical data structure
       const root = d3.hierarchy(skillsData)
         .sum(d => d.value)
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
           d3.select(this).attr('opacity', 0.8);
         });
         
-      // Add text labels
+      // Add text labels (skill name)
       nodes.append('text')
         .attr('x', 5)
         .attr('y', 20)
@@ -147,30 +147,44 @@ document.addEventListener('DOMContentLoaded', function() {
         .attr('font-size', '14px')
         .attr('font-weight', 'bold')
         .attr('fill', 'white');
-        
-      // Add legend
-      const legend = svg.append('g')
-        .attr('transform', `translate(20, ${height - 100})`);
-        
-      const categories = ["Programming Languages", "AI & ML", "Web Development", "Cloud & DevOps"];
-      
-      categories.forEach((category, i) => {
-        const legendRow = legend.append('g')
-          .attr('transform', `translate(0, ${i * 20})`);
-          
-        legendRow.append('rect')
-          .attr('width', 15)
-          .attr('height', 15)
-          .attr('fill', colorScale(category));
-          
-        legendRow.append('text')
-          .attr('x', 20)
-          .attr('y', 12)
-          .text(category)
-          .attr('fill', 'white')
-          .attr('font-size', '12px');
-      });
-      
+
+      // ------------------------------------------
+      // Legend in a separate container (if exists)
+      // ------------------------------------------
+      const legendContainer = document.getElementById('skills-legend-container');
+      if (legendContainer) {
+        // Clear any existing legend
+        legendContainer.innerHTML = '';
+
+        // Create a separate SVG for the legend
+        const legendSvgWidth = 800;
+        const legendSvgHeight = 60; // Adjust height as needed
+        const legendSvg = d3.select('#skills-legend-container')
+          .append('svg')
+          .attr('width', legendSvgWidth)
+          .attr('height', legendSvgHeight);
+
+        const categories = ["Programming Languages", "AI & ML", "Web Development", "Cloud & DevOps"];
+
+        categories.forEach((category, i) => {
+          // Position each legend item horizontally
+          const legendRow = legendSvg.append('g')
+            .attr('transform', `translate(${i * 160}, 10)`);
+
+          legendRow.append('rect')
+            .attr('width', 15)
+            .attr('height', 15)
+            .attr('fill', colorScale(category));
+
+          legendRow.append('text')
+            .attr('x', 20)
+            .attr('y', 12)
+            .text(category)
+            .attr('fill', 'white')
+            .attr('font-size', '12px');
+        });
+      }
+
       console.log("Treemap created successfully");
     } catch (error) {
       console.error("Error in treemap creation:", error);
@@ -181,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Try to create the treemap immediately
   createSkillsTreemap();
   
-  // Also try again after a delay to ensure everything is loaded
+  // Also try again after a small delay to ensure everything is fully loaded
   setTimeout(createSkillsTreemap, 500);
   setTimeout(createSkillsTreemap, 1000);
   
