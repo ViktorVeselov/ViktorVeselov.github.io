@@ -3,47 +3,36 @@
 // Manually updated project statistics
 const projectStats = {
   'RTST': {
-    downloads: 1250,
-    stars: 87,
+    downloads: 25k+,
+    stars: 0,
     lastUpdated: '2023-09-15',
-    updatedAt: 'Last updated: Oct 10, 2023' // When you manually updated these stats
+    updatedAt: 'Last updated: Oct 10, 2023'
   },
   'Simple Deployment': {
-    downloads: 785,
-    stars: 42,
+    downloads: '2k+',
+    stars: 1,
     lastUpdated: '2023-08-20',
     updatedAt: 'Last updated: Oct 5, 2023'
   },
   'Ubuntu Llama-2-7B': {
-    downloads: 2370,
-    stars: 156,
+    downloads: '2k+',
+    stars: 4,
     lastUpdated: '2023-10-05',
     updatedAt: 'Last updated: Oct 15, 2023'
   },
-  'Web-Scraping-NLP': {
-    downloads: 635,
-    stars: 38,
-    lastUpdated: '2023-07-30',
-    updatedAt: 'Last updated: Sep 28, 2023'
+
+  'SweatyCrayfish/llama-3-8b-quantized': {
+    downloads: '888 monthly',
+    stars: 10,
+    lastUpdated: '2024-04',
+    updatedAt: '2024-04'
   },
-  'Cyber-Security': {
-    downloads: 825,
-    stars: 53,
-    lastUpdated: '2023-09-10',
-    updatedAt: 'Last updated: Oct 8, 2023'
+  'light-distribution-analysis': {
+    downloads: '8k+',
+    stars: 3,
+    lastUpdated: '2024-07',
+    updatedAt: '2024-07'
   },
-  'Real-world-model-test': {
-    downloads: 410,
-    stars: 29,
-    lastUpdated: '2023-06-25',
-    updatedAt: 'Last updated: Sep 20, 2023'
-  },
-  'Google-Apps': {
-    downloads: 1680,
-    stars: 92,
-    lastUpdated: '2023-09-28',
-    updatedAt: 'Last updated: Oct 12, 2023'
-  }
 };
 
 // Function to format numbers for better readability
