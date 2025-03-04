@@ -158,7 +158,7 @@ async function sendMessage() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ messages: chatHistory })
+                body: JSON.stringify({ prompt: message })
             });
 
             if (!response.ok) {
