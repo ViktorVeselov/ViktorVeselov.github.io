@@ -166,18 +166,37 @@ async function sendMessage() {
             }
 
             const data = await response.json();
-            console.log('API Response:', data); 
+            console.log('API Response:', data);
 
-            if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
-                const chatContent = data.response;
+            let chatContent = null;
+            
+            // Try to get the response content using different possible structures
+            if (data.response) {
+                // If the API returns { response: "message" }
+                chatContent = data.response;
+            } else if (data.body) {
+                // If the API returns the Lambda response structure with a body field
+                try {
+                    // The body might be a string that needs parsing
+                    const parsedBody = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
+                    chatContent = parsedBody.response;
+                } catch (error) {
+                    console.error('Error parsing response body:', error);
+                }
+            } else if (data.choices && data.choices[0] && data.choices[0].message) {
+                // If using standard OpenAI API format
+                chatContent = data.choices[0].message.content;
+            }
+
+            if (chatContent) {
                 appendMessage(chatContent, 'bot');
                 chatHistory.push({ role: 'assistant', content: chatContent });
-
             } else {
-                throw new Error('Response structure is not as expected.');
+                throw new Error('Could not extract response content from API response');
             }
         } catch (error) {
             console.error('There was a problem with the fetch operation:', error);
+            appendMessage('Sorry, I encountered an error. Please try again.', 'error');
         }
     }
 }
