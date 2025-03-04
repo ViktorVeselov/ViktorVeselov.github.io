@@ -1,3 +1,4 @@
+// script.js
 // Project descriptions and links as a single JavaScript object
 const projects = {
     'RTST': {
