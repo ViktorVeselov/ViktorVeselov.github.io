@@ -153,6 +153,9 @@ async function sendMessage() {
         input.value = '';
         chatHistory.push({ role: 'user', content: message });
 
+        // Add thinking indicator
+        const thinkingId = appendThinkingIndicator();
+
         try {
             const response = await fetch('https://y6wp4nhty2.execute-api.us-east-2.amazonaws.com/prod/chat', {
                 method: 'POST',
@@ -168,6 +171,9 @@ async function sendMessage() {
 
             const data = await response.json();
             console.log('API Response:', data);
+
+            // Remove thinking indicator
+            removeThinkingIndicator(thinkingId);
 
             let chatContent = null;
             
@@ -196,35 +202,36 @@ async function sendMessage() {
                 throw new Error('Could not extract response content from API response');
             }
         } catch (error) {
+            // Remove thinking indicator in case of error
+            removeThinkingIndicator(thinkingId);
+            
             console.error('There was a problem with the fetch operation:', error);
             appendMessage('Sorry, I encountered an error. Please try again.', 'error');
         }
     }
 }
 
-function appendMessage(text, type) {
-    const messageElement = document.createElement('p');
-    messageElement.textContent = text;
-    if (type === 'bot') {
-        messageElement.style.backgroundColor = '#555';
-    } else if (type === 'user') {
-        messageElement.style.backgroundColor = '#4a89dc';
-    } else if (type === 'error') {
-        messageElement.style.backgroundColor = 'red';
-    }
+// Function to add thinking indicator
+function appendThinkingIndicator() {
+    const thinkingElement = document.createElement('div');
+    const id = 'thinking-' + Date.now();
+    thinkingElement.id = id;
+    thinkingElement.className = 'thinking-indicator';
+    thinkingElement.innerHTML = '<span>.</span><span>.</span><span>.</span>';
     
     const messagesContainer = document.getElementById('chatbot-messages');
     if (messagesContainer) {
-        messagesContainer.appendChild(messageElement);
-        
-        // Add auto-scroll - this won't affect your CSS but improves usability
+        messagesContainer.appendChild(thinkingElement);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
+    
+    return id;
 }
 
-document.getElementById('chatbot-send').addEventListener('click', sendMessage);
-document.getElementById('chatbot-input').addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        sendMessage();
+// Function to remove thinking indicator
+function removeThinkingIndicator(id) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.remove();
     }
-});
+}
