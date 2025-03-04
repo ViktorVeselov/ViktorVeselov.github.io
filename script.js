@@ -10,16 +10,16 @@ const projects = {
         link: 'https://github.com/SweatyCrayfish/simple-deployment/tree/main'
     },
     'Ubuntu Llama-2-7B': {
-        description: 'Building dialogue systems, where a human can have a natural-feeling conversation with a virtual agent, is a challenging task in Natural Language Processing and the focus of much ongoing research. Some of the challenges include linking references to the same entity over time, tracking what has happened in the conversation previously, and generating appropriate responses. This paper delves into our experiment in building such a virtual agent. We scrutinized various models such as CodeLLaMa, OPT, FlanT5, and Llama2. We outline the rationale behind our choice of Llama2-chat-instruct and how the model stands out due to its high-quality, instruction-tuned capabilities, and inherent ability for summarizing text. To further augment the quality of inferences drawn by the model, we implement a complete fine-tuning approach. Furthermore, we will explore Parameter Efficient Fine-Tuning (PEFT), demonstrating how it reduces memory and time resource requirements while maintaining model performance. Finally, we will assess these results using ROUGE metrics - a popular choice for evaluating models - and deploy the model to Hugging Face for serving.',
+        description: 'Building dialogue systems, where a human can have a natural-feeling conversation with a virtual agent, is a challenging task in Natural Language Processing and the focus of much ongoing research. Some of the challenges include linking references to the same entity over time, tracking what has happened in the conversation previously, and generating appropriate responses. This paper delves into our experiment in building such a virtual agent. We scrutinized various models such as CodeLLaMa, OPT, FlanT5, and Llama2. We outline the rationale behind our choice of Llama2-chat-instruct and how the model stands out due to its high-quality, instruction-tuned capabilities, and inherent ability for summarizing text. To further augment the quality of inferences drawn by the model, we implement a complete fine-tuning approach. Furthermore, we will explore Parameter Efficient Fine-Tuning (PEFT), demonstrating how it reduces memory and time resource requirements while maintaining model performance. Finally, we will assess these results using ROUGE metrics - a popular choice for evaluating models - and deploy the model to Hugging Face for serving. Model available at `https://huggingface.co/SweatyCrayfish/Linux-CodeLlama-2-7B`',
         link: 'https://github.com/SweatyCrayfish/Ubuntu-Lllama-2/tree/main'
     },
     'Llama-3-8b-quantized': {
         description: 'Quantized LLM hosted on huggingface.',
-        link: 'https://github.com/SweatyCrayfish/Cyber-Security'
+        link: 'https://huggingface.co/SweatyCrayfish/llama-3-8b-quantized'
     },
     'light-distribution-analysis': {
         description: 'Determing body temperature on a single image and analysies quality of an image based on flux, translate RGB to wavelength.',
-        link: 'https://github.com/SweatyCrayfish/Cyber-Security'
+        link: 'https://github.com/ViktorVeselov/light-distribution-analysis'
     },
     'Web-Scraping-NLP': {
         description: 'Designed to extract text from video. Extract question description for videos if it does exist, including a time stamps',
