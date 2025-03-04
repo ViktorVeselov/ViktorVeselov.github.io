@@ -264,155 +264,152 @@ document.getElementById('chatbot-input').addEventListener('keydown', (event) => 
     }
 });
 
-// Skill data structure organized by categories
-const skillsData = {
-  name: "Skills",
-  children: [
-    {
-      name: "Programming Languages",
-      children: [
-        { name: "Python", value: 96 },
-        { name: "JavaScript", value: 80 },
-        { name: "R", value: 65 },
-        { name: "SQL", value: 90 }
-      ]
-    },
-    {
-      name: "AI & ML",
-      children: [
-        { name: "TensorFlow", value: 96 },
-        { name: "PyTorch", value: 89 },
-        { name: "NLP", value: 98 },
-        { name: "Computer Vision", value: 96 }
-      ]
-    },
-    {
-      name: "Web Development",
-      children: [
-        { name: "HTML", value: 90 },
-        { name: "CSS", value: 85 },
-        { name: "React", value: 80 },
-        { name: "Flask", value: 80 }
-      ]
-    },
-    {
-      name: "Cloud & DevOps",
-      children: [
-        { name: "AWS", value: 90 },
-        { name: "GCP", value: 96 },
-        { name: "GitHub", value: 88 },
-        { name: "Docker", value: 96 }
-      ]
-    }
-  ]
-};
+document.addEventListener('DOMContentLoaded', function() {
+  // Skill data structure organized by categories
+  const skillsData = {
+    name: "Skills",
+    children: [
+      {
+        name: "Programming Languages",
+        children: [
+          { name: "Python", value: 96 },
+          { name: "JavaScript", value: 80 },
+          { name: "R", value: 65 },
+          { name: "SQL", value: 90 }
+        ]
+      },
+      {
+        name: "AI & ML",
+        children: [
+          { name: "TensorFlow", value: 96 },
+          { name: "PyTorch", value: 89 },
+          { name: "NLP", value: 98 },
+          { name: "Computer Vision", value: 96 }
+        ]
+      },
+      {
+        name: "Web Development",
+        children: [
+          { name: "HTML", value: 90 },
+          { name: "CSS", value: 85 },
+          { name: "React", value: 80 },
+          { name: "Flask", value: 80 }
+        ]
+      },
+      {
+        name: "Cloud & DevOps",
+        children: [
+          { name: "AWS", value: 90 },
+          { name: "GCP", value: 96 },
+          { name: "GitHub", value: 88 },
+          { name: "Docker", value: 96 }
+        ]
+      }
+    ]
+  };
 
-// Function to create the treemap
-function createSkillsTreemap() {
-  // Make sure the skills container is empty
-  const skillsContainer = document.querySelector('.skills-container');
-  if (!skillsContainer) return;
-  
-  skillsContainer.innerHTML = '';
-  
-  // Create SVG container for the treemap
-  const width = Math.min(800, window.innerWidth - 40);
-  const height = 500;
-  
-  const treemapContainer = document.createElement('div');
-  treemapContainer.id = 'skills-treemap-container';
-  treemapContainer.style.width = `${width}px`;
-  treemapContainer.style.height = `${height}px`;
-  treemapContainer.style.margin = '0 auto';
-  
-  skillsContainer.appendChild(treemapContainer);
-  
-  // Create SVG element
-  const svg = d3.select('#skills-treemap-container')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
+  // Function to create the treemap
+  function createSkillsTreemap() {
+    // Get the container element
+    const container = document.getElementById('skills-treemap-container');
+    if (!container) return;
     
-  // Define color scale for different categories
-  const colorScale = d3.scaleOrdinal()
-    .domain(["Programming Languages", "AI & ML", "Web Development", "Cloud & DevOps"])
-    .range(["#4a89dc", "#ff7700", "#50C878", "#9370DB"]);
+    // Clear the container
+    container.innerHTML = '';
     
-  // Create a hierarchical data structure
-  const root = d3.hierarchy(skillsData)
-    .sum(d => d.value)
-    .sort((a, b) => b.value - a.value);
+    // Set dimensions
+    const width = container.offsetWidth;
+    const height = container.offsetHeight;
     
-  // Create treemap layout
-  const treemap = d3.treemap()
-    .size([width, height])
-    .padding(2);
+    // Create SVG element
+    const svg = d3.select('#skills-treemap-container')
+      .append('svg')
+      .attr('width', width)
+      .attr('height', height);
+      
+    // Define color scale for different categories
+    const colorScale = d3.scaleOrdinal()
+      .domain(["Programming Languages", "AI & ML", "Web Development", "Cloud & DevOps"])
+      .range(["#4a89dc", "#ff7700", "#50C878", "#9370DB"]);
+      
+    // Create a hierarchical data structure
+    const root = d3.hierarchy(skillsData)
+      .sum(d => d.value)
+      .sort((a, b) => b.value - a.value);
+      
+    // Create treemap layout
+    const treemap = d3.treemap()
+      .size([width, height])
+      .padding(2);
+      
+    // Generate the treemap
+    treemap(root);
     
-  // Generate the treemap
-  treemap(root);
-  
-  // Create groups for each node
-  const nodes = svg.selectAll('g')
-    .data(root.leaves())
-    .enter()
-    .append('g')
-    .attr('transform', d => `translate(${d.x0},${d.y0})`);
+    // Create groups for each node
+    const nodes = svg.selectAll('g')
+      .data(root.leaves())
+      .enter()
+      .append('g')
+      .attr('transform', d => `translate(${d.x0},${d.y0})`);
+      
+    // Add rectangles for each skill
+    nodes.append('rect')
+      .attr('width', d => d.x1 - d.x0)
+      .attr('height', d => d.y1 - d.y0)
+      .attr('fill', d => colorScale(d.parent.data.name))
+      .attr('opacity', 0.8)
+      .attr('stroke', '#fff')
+      .on('mouseover', function() {
+        d3.select(this).attr('opacity', 1);
+      })
+      .on('mouseout', function() {
+        d3.select(this).attr('opacity', 0.8);
+      });
+      
+    // Add text labels
+    nodes.append('text')
+      .attr('x', 5)
+      .attr('y', 20)
+      .text(d => d.data.name)
+      .attr('font-size', '12px')
+      .attr('fill', 'white');
+      
+    // Add proficiency level as percentages
+    nodes.append('text')
+      .attr('x', 5)
+      .attr('y', 38)
+      .text(d => `${d.data.value}%`)
+      .attr('font-size', '14px')
+      .attr('font-weight', 'bold')
+      .attr('fill', 'white');
+      
+    // Add legend
+    const legend = svg.append('g')
+      .attr('transform', `translate(20, ${height - 100})`);
+      
+    const categories = ["Programming Languages", "AI & ML", "Web Development", "Cloud & DevOps"];
     
-  // Add rectangles for each skill
-  nodes.append('rect')
-    .attr('width', d => d.x1 - d.x0)
-    .attr('height', d => d.y1 - d.y0)
-    .attr('fill', d => colorScale(d.parent.data.name))
-    .attr('opacity', 0.8)
-    .attr('stroke', '#fff')
-    .on('mouseover', function() {
-      d3.select(this).attr('opacity', 1);
-    })
-    .on('mouseout', function() {
-      d3.select(this).attr('opacity', 0.8);
+    categories.forEach((category, i) => {
+      const legendRow = legend.append('g')
+        .attr('transform', `translate(0, ${i * 20})`);
+        
+      legendRow.append('rect')
+        .attr('width', 15)
+        .attr('height', 15)
+        .attr('fill', colorScale(category));
+        
+      legendRow.append('text')
+        .attr('x', 20)
+        .attr('y', 12)
+        .text(category)
+        .attr('fill', 'white')
+        .attr('font-size', '12px');
     });
-    
-  // Add text labels
-  nodes.append('text')
-    .attr('x', 5)
-    .attr('y', 20)
-    .text(d => d.data.name)
-    .attr('font-size', '12px')
-    .attr('fill', 'white');
-    
-  // Add proficiency level as percentages
-  nodes.append('text')
-    .attr('x', 5)
-    .attr('y', 38)
-    .text(d => `${d.data.value}%`)
-    .attr('font-size', '14px')
-    .attr('font-weight', 'bold')
-    .attr('fill', 'white');
-    
-  // Add legend
-  const legend = svg.append('g')
-    .attr('transform', `translate(20, ${height - 100})`);
-    
-  const categories = ["Programming Languages", "AI & ML", "Web Development", "Cloud & DevOps"];
-  
-  categories.forEach((category, i) => {
-    const legendRow = legend.append('g')
-      .attr('transform', `translate(0, ${i * 20})`);
-      
-    legendRow.append('rect')
-      .attr('width', 15)
-      .attr('height', 15)
-      .attr('fill', colorScale(category));
-      
-    legendRow.append('text')
-      .attr('x', 20)
-      .attr('y', 12)
-      .text(category)
-      .attr('fill', 'white')
-      .attr('font-size', '12px');
-  });
-}
+  }
 
-// Call the function when the page loads and when the window is resized
-window.addEventListener('load', createSkillsTreemap);
-window.addEventListener('resize', createSkillsTreemap);
+  // Create the treemap on page load
+  createSkillsTreemap();
+  
+  // Resize the treemap when window size changes
+  window.addEventListener('resize', createSkillsTreemap);
+});
