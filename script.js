@@ -169,7 +169,7 @@ async function sendMessage() {
             console.log('API Response:', data); 
 
             if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
-                const chatContent = data.choices[0].message.content;
+                const chatContent = data.response;
                 appendMessage(chatContent, 'bot');
                 chatHistory.push({ role: 'assistant', content: chatContent });
 
