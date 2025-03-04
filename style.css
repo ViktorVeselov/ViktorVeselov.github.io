@@ -407,3 +407,49 @@ footer {
         opacity: 1;
     }
 }
+/*//////////////////TYPING ANIMATION ///////////////*/
+/* Blinking cursor for typing animation */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: white;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+    vertical-align: middle;
+}
+
+/* Style for bot messages with better spacing for the typing effect */
+.bot-message {
+    background-color: #555;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* Style for user messages */
+.user-message {
+    background-color: #4a89dc;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* Style for error messages */
+.error-message {
+    background-color: #e74c3c;
+    padding: 10px;
+    border-radius: 10px;
+    margin: 5px 0;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
