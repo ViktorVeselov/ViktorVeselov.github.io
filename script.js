@@ -1,5 +1,4 @@
 // script.js
-
 // Project descriptions and links as a single JavaScript object
 const projects = {
     'RTST': {
@@ -42,7 +41,9 @@ const projects = {
 
 // Get all project frames
 const projectFrames = document.querySelectorAll('.project-frame');
+// Get the project description element
 const projectDescriptionElement = document.getElementById('project-description');
+// Get the learn more link
 const learnMoreLink = document.getElementById('learn-more');
 
 // Event listeners to project frames
@@ -176,7 +177,7 @@ function removeThinkingIndicator(id) {
     }
 }
 
-// sendMessage function
+// Updated sendMessage function
 async function sendMessage() {
     const input = document.getElementById('chatbot-input');
     const message = input.value.trim();
@@ -184,6 +185,8 @@ async function sendMessage() {
         appendMessage(message, 'user');
         input.value = '';
         chatHistory.push({ role: 'user', content: message });
+
+        // Add thinking indicator
         const thinkingId = appendThinkingIndicator();
 
         try {
@@ -201,19 +204,27 @@ async function sendMessage() {
 
             const data = await response.json();
             console.log('API Response:', data);
-            removeThinkingIndicator(thinkingId);
-            let chatContent = null;
 
+            // Remove thinking indicator
+            removeThinkingIndicator(thinkingId);
+
+            let chatContent = null;
+            
+            // Try to get the response content using different possible structures
             if (data.response) {
+                // If the API returns { response: "message" }
                 chatContent = data.response;
             } else if (data.body) {
+                // If the API returns the Lambda response structure with a body field
                 try {
+                    // The body might be a string that needs parsing
                     const parsedBody = typeof data.body === 'string' ? JSON.parse(data.body) : data.body;
                     chatContent = parsedBody.response;
                 } catch (error) {
                     console.error('Error parsing response body:', error);
                 }
             } else if (data.choices && data.choices[0] && data.choices[0].message) {
+                // If using standard OpenAI API format
                 chatContent = data.choices[0].message.content;
             }
 
@@ -247,6 +258,8 @@ function appendMessage(text, type) {
     const messagesContainer = document.getElementById('chatbot-messages');
     if (messagesContainer) {
         messagesContainer.appendChild(messageElement);
+        
+        // Add auto-scroll - this won't affect your CSS but improves usability
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 }
@@ -346,7 +359,8 @@ document.addEventListener('DOMContentLoaded', function() {
       .enter()
       .append('g')
       .attr('transform', d => `translate(${d.x0},${d.y0})`);
-
+      
+    // Add rectangles for each skill
     nodes.append('rect')
       .attr('width', d => d.x1 - d.x0)
       .attr('height', d => d.y1 - d.y0)
@@ -359,7 +373,8 @@ document.addEventListener('DOMContentLoaded', function() {
       .on('mouseout', function() {
         d3.select(this).attr('opacity', 0.8);
       });
-
+      
+    // Add text labels
     nodes.append('text')
       .attr('x', 5)
       .attr('y', 20)
@@ -367,6 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .attr('font-size', '12px')
       .attr('fill', 'white');
       
+    // Add proficiency level as percentages
     nodes.append('text')
       .attr('x', 5)
       .attr('y', 38)
@@ -374,7 +390,8 @@ document.addEventListener('DOMContentLoaded', function() {
       .attr('font-size', '14px')
       .attr('font-weight', 'bold')
       .attr('fill', 'white');
-
+      
+    // Add legend
     const legend = svg.append('g')
       .attr('transform', `translate(20, ${height - 100})`);
       
