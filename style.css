@@ -228,6 +228,32 @@ section p {
     backdrop-filter: blur(10px);
 }
 
+/* Animation for selected project frame */
+.project-frame.active {
+    animation: selectedHighlight 0.5s ease-out;
+}
+
+/* Define keyframes for a pulse/glow effect */
+@keyframes selectedHighlight {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+    }
+}
+
+.project-frame.active {
+    border: 3px solid #ff7700; 
+    box-shadow: 0 0 10px rgba(255, 119, 0, 0.8);
+}
+
 #learn-more {
     display: block;
     margin-top: 10px;
